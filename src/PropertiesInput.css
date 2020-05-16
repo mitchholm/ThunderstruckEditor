@@ -1,0 +1,45 @@
+.PropertiesInputPanel {
+    right: 0;
+    position: absolute;
+    overflow: hidden;
+    background-color: rgb(68, 68, 68);
+    min-height: 100%;
+    z-index: 10;
+    border-left: 1px solid black;
+    transition: width .3s ease-in-out;
+}
+
+input {
+    display: block;
+    margin: 10pt auto;
+    width: 80%;
+}
+
+.open {
+    max-width: 200pt;
+}
+
+.closed {
+    width: 10pt;
+}
+
+.rightHandle {
+    position: absolute;
+    width: 10pt;
+    height: 100%;
+    float: left;
+    background-color: rgb(49, 49, 49);
+    background: linear-gradient(to left, #aebcbf 0%,#6e7774 46%,#0a0e0a 60%,#0a0809 100%);
+}
+
+.inputArea {
+    width: 200pt;
+}
+
+.valid {
+    background-color: green;
+}
+
+.invalid {
+    background-color: red;
+}

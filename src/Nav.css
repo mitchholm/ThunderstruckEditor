@@ -1,0 +1,32 @@
+.navbar {
+    position: fixed;
+    display: block;
+    height: 30pt;
+    width: 100%;
+    background: linear-gradient(to bottom, #7d7e7d 0%,#0e0e0e 100%);
+    top: 0;
+    box-shadow: 0pt 0pt 5pt 5pt rgba(0, 0, 0, 0.75);
+    z-index: 20;
+}
+
+svg {
+    height: 20pt;
+    width: 20pt;
+    padding: 5pt;
+    float: left;
+    color: black;
+    transition: 1s ease-in-out;
+}
+
+svg:hover {
+    filter: invert(1);
+    animation-name: rotate; 
+    animation-duration: 200s; 
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in;
+}
+
+@keyframes rotate {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(3600000deg);}
+}

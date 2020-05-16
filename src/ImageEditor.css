@@ -1,0 +1,7 @@
+.ImageEditorPanel {
+    position: absolute;
+    background-color: grey;
+    width: 100%;
+    min-height: 100%;
+    z-index: 2;
+}

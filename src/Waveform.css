@@ -1,0 +1,26 @@
+.WaveformPanel {
+    position: absolute;
+    left: 0;
+    overflow: hidden;
+    background-color: rgb(68, 68, 68);
+    min-height: 100%;
+    z-index: 10;
+    border-right: 1px solid black;
+    transition: width .3s ease-in-out;
+}
+
+.open {
+    width: 200pt;
+}
+
+.closed {
+    width: 10pt;
+}
+
+.leftHandle {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    background-color: rgb(49, 49, 49);
+    background: linear-gradient(to right, #aebcbf 0%,#6e7774 46%,#0a0e0a 60%,#0a0809 100%);    width: 10pt;
+}
