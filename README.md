@@ -1,3 +1,10 @@
+# Thunderstruck Editor
+
+Will output an image file that you can edit live, for creating light shows from Spotify songs. Input song via song id, Input ClientID and ClientSecret from Spotify for authentication (Fields will go green when successfully auth'd). I abuse cookies for clientid:secret:accessToken which makes it pretty easy to manage the ongoing refreshes.
+
+I don't actually know how React works, yeehaw.
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

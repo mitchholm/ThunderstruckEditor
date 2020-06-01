@@ -42,11 +42,12 @@ class PropertiesInput extends React.Component {
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Basic ' + btoa(this.state.clientId + ':' + this.state.clientSecret)
+                'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret)
             }
         })
         .then(response => response.json())
         .then((response) => {
+            if(response.error) return;
             this.state.access_token = response.access_token;
             document.cookie = this.state.clientId + ':' + this.state.clientSecret + ":" + response.access_token;
             this.setState({
@@ -68,7 +69,7 @@ class PropertiesInput extends React.Component {
                 <div className="inputArea">
                     <input type="text" className={this.state.spotifyLogin} onChange={(e) => this.handleChange('clientId', e)}  placeholder="Spotify Client ID" />
                     <input type="text" className={this.state.spotifyLogin} onChange={(e) => this.handleChange('clientSecret', e)}  placeholder="Spotify Client Secret" />
-                    <input type="text" onChange={(e) => this.handleGlobalChange('songId',e)} placeholder="Song ID" />
+                    <input type="text" onChange={(e) => this.handleGlobalChange('songId', e)} placeholder="Song ID" />
                     <input type="text" onChange={(e) => this.handleGlobalChange('width', e)} placeholder="Lights on the Strip" />
                     <input type="text" onChange={(e) => this.handleGlobalChange('resolution', e)} placeholder="Lights per pixel" />
                     <input type="text" onChange={(e) => this.handleGlobalChange('refreshRate', e)} placeholder="Light Refresh Rate (Hz)" />
