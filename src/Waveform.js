@@ -75,7 +75,7 @@ class Waveform extends React.Component {
         ctx.moveTo(width / 2, 0)
 
         data.segments.forEach((segment) => {
-            amplitude = (width / 2) + (segment.loudness_max * 5);
+            amplitude = (width / 2) + (segment.loudness_start * 3);
             ctx.lineTo(Math.round(amplitude % width), (i += segment.duration * heightInc));
         })
         ctx.lineTo((width / 2), i);
@@ -88,8 +88,8 @@ class Waveform extends React.Component {
         ctx.beginPath();
         ctx.moveTo(width / 2, 0)
         data.segments.forEach((segment) => {
-            amplitude = (width / 2) + (segment.loudness_max * 5) * -1;
-            ctx.lineTo(Math.round(amplitude % width), (i += segment.duration * heightInc));
+            amplitude = (width / 2) - (segment.loudness_start * 3);
+            ctx.lineTo(Math.round(amplitude), (i += segment.duration * heightInc));
         })
         ctx.lineTo((width / 2), i);
         ctx.lineTo((width / 2), 0);

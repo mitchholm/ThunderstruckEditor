@@ -35,7 +35,5 @@
 
 #display {
     width: 200pt;
-    height: 5000px;
     background-color: white;
-    overflow: scroll;
 }
