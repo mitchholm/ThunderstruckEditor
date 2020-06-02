@@ -37,22 +37,19 @@ class Waveform extends React.Component {
     }
 
     requestPlayback = () => {
-        let global = this.props.getState();
-        
-        fetch('https://api.spotify.com/v1/me/player', {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                'Authorization': 'Bearer ' + (global.accessToken || document.cookie.split(':')[2])
-            }
-        })
-        .then(value => value.json())
-        .then(value => this.playback(value))
+        this.playback('test')
 
     }
 
     playback = (data) => {
         console.log(data)
+
+        var dataUrl = document.getElementById("display").toDataURL();
+        var img = document.createElement('img');
+        img.src = dataUrl;
+        document.getElementById('ImageEditor').appendChild(img);
+
+
     }
 
     generateWaveform = (data) => {
@@ -81,7 +78,7 @@ class Waveform extends React.Component {
         ctx.lineTo((width / 2), i);
         ctx.lineTo((width / 2), 0);
 
-        ctx.fillStyle = "grey";
+        ctx.fillStyle = "pink";
         ctx.fill();
 
         i = 0;
@@ -94,7 +91,7 @@ class Waveform extends React.Component {
         ctx.lineTo((width / 2), i);
         ctx.lineTo((width / 2), 0);
 
-        ctx.fillStyle = "grey";
+        ctx.fillStyle = "pink";
         ctx.fill();
 
     }
