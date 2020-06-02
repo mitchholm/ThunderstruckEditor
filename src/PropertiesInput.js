@@ -49,7 +49,8 @@ class PropertiesInput extends React.Component {
         .then((response) => {
             if(response.error) return;
             this.state.access_token = response.access_token;
-            document.cookie = this.state.clientId + ':' + this.state.clientSecret + ":" + response.access_token;
+            if (this.state.clientId && this.state.clientSecret)
+                document.cookie = this.state.clientId + ':' + this.state.clientSecret + ":" + response.access_token;
             this.setState({
                 accessToken: response.access_token,
                 spotifyLogin: 'valid'

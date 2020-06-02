@@ -11,11 +11,20 @@ class Waveform extends React.Component {
         this.setState(prevState => ({ isPanelVisible: !prevState.isPanelVisible }));
     };
 
+    parseSongId = (id) => {
+        if (!id)
+            return;
+        else if (id.length === 22)
+            return id;
+        else if (id.includes('track'))
+            return id.slice(-22);
+    }
+
     requestWaveform = () => {
         let global = this.props.getState();
         console.log(global)
 
-        fetch('https://api.spotify.com/v1/audio-analysis/' + (global.songId || '2EEinN4Zk8MUv4OQuLsTBj'), {
+        fetch('https://api.spotify.com/v1/audio-analysis/' + (this.parseSongId(global.songId) || '57bgtoPSgt236HzfBOd8kj'), {
             method: 'GET',
             mode: 'cors',
             headers: {
@@ -27,31 +36,68 @@ class Waveform extends React.Component {
         .catch(error => console.log(error))
     }
 
+    requestPlayback = () => {
+        let global = this.props.getState();
+        
+        fetch('https://api.spotify.com/v1/me/player', {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Authorization': 'Bearer ' + (global.accessToken || document.cookie.split(':')[2])
+            }
+        })
+        .then(value => value.json())
+        .then(value => this.playback(value))
+
+    }
+
+    playback = (data) => {
+        console.log(data)
+    }
+
     generateWaveform = (data) => {
         console.log(data)
         if (data.error) return;
         
         var c = document.getElementById("display");
         var ctx = c.getContext("2d");
-        c.setAttribute('height', window.getComputedStyle(c, null).getPropertyValue("height"));
+
+        var heightInc = 10;
+
+        c.height = data.track.duration * heightInc;
+        console.log("Setting height to " + data.track.duration * heightInc)
+        
         var width = c.width;
-        var height = c.height;
-        var duration = data.track.duration;
-        var heightInc = height/duration;
+
         ctx.beginPath();
-        ctx.moveTo(width/2, 0)
         var i = 0;
         var amplitude;
-        //
+        ctx.moveTo(width / 2, 0)
+
         data.segments.forEach((segment) => {
             amplitude = (width / 2) + (segment.loudness_max * 5);
             ctx.lineTo(Math.round(amplitude % width), (i += segment.duration * heightInc));
         })
-        ctx.stroke();
+        ctx.lineTo((width / 2), i);
+        ctx.lineTo((width / 2), 0);
+
+        ctx.fillStyle = "grey";
+        ctx.fill();
+
+        i = 0;
+        ctx.beginPath();
+        ctx.moveTo(width / 2, 0)
+        data.segments.forEach((segment) => {
+            amplitude = (width / 2) + (segment.loudness_max * 5) * -1;
+            ctx.lineTo(Math.round(amplitude % width), (i += segment.duration * heightInc));
+        })
+        ctx.lineTo((width / 2), i);
+        ctx.lineTo((width / 2), 0);
+
+        ctx.fillStyle = "grey";
+        ctx.fill();
 
     }
-
-
 
     render() {
         return (
@@ -60,6 +106,7 @@ class Waveform extends React.Component {
 
                 <div className="WaveFormBox">
                     <button onClick={this.requestWaveform}>Generate</button>
+                    <button onClick={this.requestPlayback}>Playback</button>
                     <canvas id="display"/>
                 </div>
             </div>
