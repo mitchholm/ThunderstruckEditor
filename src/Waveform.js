@@ -52,6 +52,10 @@ class Waveform extends React.Component {
 
     }
 
+    findValue = (segment) => {
+        return (segment.loudness_max + segment.loudness_start + segment.loudness_end + 60);
+    }
+
     generateWaveform = (data) => {
         console.log(data)
         if (data.error) return;
@@ -68,30 +72,47 @@ class Waveform extends React.Component {
 
         ctx.beginPath();
         var i = 0;
-        var amplitude;
+        var songLow = 0, songHigh = 0;
         ctx.moveTo(width / 2, 0)
+        data.segments.forEach((segment) => {
+            if(segment.loudness_max > songHigh)
+                songHigh = segment.loudness_max
+            if (segment.loudness > songHigh)
+                songHigh = segment.loudness
+            if (segment.loudness_max < songLow)
+                songLow = segment.loudness_max;
+            if (segment.loudness < songLow)
+                songLow = segment.loudness;
+        })
+
+        var exp = 5;
+        var max = Math.pow(songHigh-songLow, exp);
+        var center = width / 2;
+        var scalar = center/max;
 
         data.segments.forEach((segment) => {
-            amplitude = (width / 2) + (segment.loudness_start * 3);
-            ctx.lineTo(Math.round(amplitude % width), (i += segment.duration * heightInc));
+            ctx.lineTo(center - scalar * Math.pow(segment.loudness_start-songLow, exp), (i += segment.duration * heightInc));
+            ctx.lineTo(center - scalar * Math.pow(segment.loudness_max-songLow, exp), (i + segment.loudness_max_time * heightInc));
+
         })
+
         ctx.lineTo((width / 2), i);
         ctx.lineTo((width / 2), 0);
-
-        ctx.fillStyle = "pink";
+        ctx.fillStyle = "grey";
         ctx.fill();
 
-        i = 0;
         ctx.beginPath();
-        ctx.moveTo(width / 2, 0)
+        i=0;
+
         data.segments.forEach((segment) => {
-            amplitude = (width / 2) - (segment.loudness_start * 3);
-            ctx.lineTo(Math.round(amplitude), (i += segment.duration * heightInc));
+            ctx.lineTo(center + scalar * Math.pow(segment.loudness_start - songLow, exp), (i += segment.duration * heightInc));
+            ctx.lineTo(center + scalar * Math.pow(segment.loudness_max - songLow, exp), (i + segment.loudness_max_time * heightInc));
+
         })
+
         ctx.lineTo((width / 2), i);
         ctx.lineTo((width / 2), 0);
-
-        ctx.fillStyle = "pink";
+        ctx.fillStyle = "grey";
         ctx.fill();
 
     }
